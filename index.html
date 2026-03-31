@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GLOBAL OPS — Partner Intelligence Center</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #05070a; --card: #0f121a; --card-hover: #161b26;
@@ -17,54 +17,58 @@
         
         /* Header */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-        .logo-title { font-size: 28px; font-weight: 700; letter-spacing: -1px; }
+        .logo-title { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
         .logo-title span { color: var(--accent); }
         .search-bar { width: 450px; padding: 15px 25px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; color: #fff; font-size: 15px; outline: none; transition: 0.3s; }
         .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(74,159,255,0.15); }
 
         /* Dashboard Grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(600px, 1fr)); gap: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(650px, 1fr)); gap: 30px; }
         
         /* Card Structure */
-        .p-card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 35px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; display: flex; flex-direction: column; }
-        .p-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.4); background: var(--card-hover); }
+        .p-card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 35px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .p-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5); background: var(--card-hover); }
         
-        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .country-badge { background: var(--accent-dim); color: var(--accent); padding: 5px 15px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
-        .partner-name { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-        .ceo-tag { font-size: 14px; color: var(--text-muted); margin-top: 4px; font-weight: 400; }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; }
+        .country-badge { background: var(--accent-dim); color: var(--accent); padding: 5px 15px; border-radius: 100px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .partner-name { font-size: 34px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-top: 5px; }
+        .ceo-tag { font-size: 14px; color: var(--text-muted); margin-top: 4px; font-family: 'DM Mono'; }
 
-        /* Content Sections */
-        .section { margin-bottom: 25px; }
+        /* Section Layout */
+        .info-section { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
         .section-header { font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
         .section-header::after { content: ""; flex: 1; height: 1px; background: var(--border); }
         
-        .main-info { font-size: 15px; color: var(--text); margin-bottom: 15px; }
-        .sub-info { font-size: 14px; color: var(--text-muted); text-align: justify; }
+        .desc-text { font-size: 14px; color: var(--text-muted); text-align: justify; margin-bottom: 15px; }
+        .main-point { font-size: 15px; color: var(--text); font-weight: 600; margin-bottom: 10px; }
 
-        /* Charts */
-        .chart-box { background: #05070a; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-top: 10px; }
-        .chart-title { font-size: 10px; color: var(--success); margin-bottom: 8px; font-weight: 700; opacity: 0.8; }
-        .bar-chart { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--success); line-height: 1.5; white-space: pre; }
+        /* Charts & Visuals */
+        .chart-box { background: #05070a; border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 15px; }
+        .chart-title { font-size: 10px; color: var(--success); font-weight: 800; margin-bottom: 10px; text-transform: uppercase; opacity: 0.7; }
+        .bar-chart { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--success); white-space: pre; line-height: 1.4; }
 
-        /* Highlights & Admin */
-        .highlight { background: rgba(255, 179, 64, 0.07); border-left: 4px solid var(--warning); padding: 15px; border-radius: 4px; margin: 10px 0; font-size: 14px; }
-        .contract-box { background: rgba(232, 234, 240, 0.03); border-radius: 12px; padding: 20px; margin-top: 10px; border: 1px solid var(--border); }
-        .admin-critical { background: linear-gradient(135deg, rgba(74, 159, 255, 0.1), transparent); border: 1px dashed var(--accent); padding: 20px; border-radius: 16px; margin-top: auto; }
-        .admin-critical strong { color: var(--accent); font-size: 13px; display: block; margin-bottom: 8px; text-transform: uppercase; }
+        /* Issue & Contract */
+        .highlight-danger { background: rgba(255, 107, 107, 0.08); border-left: 4px solid var(--danger); padding: 18px; border-radius: 8px; margin: 15px 0; font-size: 14px; color: #fff; }
+        .highlight-warning { background: rgba(255, 179, 64, 0.08); border-left: 4px solid var(--warning); padding: 18px; border-radius: 8px; margin: 15px 0; font-size: 14px; color: #fff; }
+        
+        .contract-info { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid var(--border); font-size: 13px; color: var(--text-muted); }
 
-        .lineup { font-size: 12px; color: var(--accent); font-weight: 600; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border); }
+        /* Admin Critical Focus */
+        .admin-box { background: linear-gradient(135deg, rgba(74, 159, 255, 0.15), transparent); border: 1.5px dashed var(--accent); padding: 25px; border-radius: 20px; margin-top: auto; }
+        .admin-box strong { color: var(--accent); font-size: 13px; display: block; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } .search-bar { width: 100%; } }
+        .lineup-footer { font-size: 12px; color: var(--accent); font-weight: 700; margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+
+        @media (max-width: 1200px) { .grid { grid-template-columns: 1fr; } .info-section { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="header">
         <div>
-            <h1 class="logo-title">GLOBAL OPS <span>PARTNER HUB</span></h1>
-            <p style="color: var(--text-muted); font-size: 14px;">14개 주요 거래선 핵심 인텔리전스 및 운영 전략</p>
+            <h1 class="logo-title">GLOBAL OPS <span>PARTNER INTELLIGENCE</span></h1>
+            <p style="color: var(--text-muted); font-size: 14px; font-weight: 300;">주간 보고 및 회의록 기반 정밀 오퍼레이션 분석 (v2.0)</p>
         </div>
-        <input type="text" class="search-bar" id="searchInput" placeholder="업체명, 국가, 키워드 검색...">
+        <input type="text" class="search-bar" id="searchInput" placeholder="업체, 국가, 이슈 키워드 검색...">
     </div>
 
     <div class="grid" id="partnerGrid"></div>
@@ -75,79 +79,79 @@
                 "업체명": "Brondell",
                 "국가": "미국, 캐나다",
                 "CEO": "Steve Scheer / San Francisco",
-                "라인업": "비데 (S1400, S1000), 정수기 (Circle), 청정기 (Breeze)",
-                "매출분석": "2025년 전망 6,121 K$로 계획 대비 159% 초과 달성 유력. 필터/부품 부문 마진율 59.3%로 소모품 수익성 극대화 중. [손익/계획 데이터]",
-                "매출그래프": "21년 실적:  8,642 K$ |■■■■■■■■■■■■■■■■\n22년 실적: 10,776 K$ |■■■■■■■■■■■■■■■■■■■■\n24년 실적:  4,205 K$ |■■■■■■■■\n25년 전망:  6,121 K$ |■■■■■■■■■■■",
-                "판매량그래프": "[S1400 비데]\n'22: 13,500대 |■■■■■■■■■■\n'24:  6,585대 |■■■■■\n[정수기 전체]\n'22: 31,428대 |■■■■■■■■■■■■■■■■■■■■\n'24:  7,008대 |■■■■",
-                "현재상태": "코스트코 P-160L 프로모션 성공 지원. 채권 기한 30일 연장으로 재무 유동성 지원 중. [주간보고]",
-                "이슈": "EPA 규제 및 리즈법 대응 인쇄물 긴급 변경. 캐나다 누수 소송 로펌 대응 및 비데 크랙 품질 이슈 진단. [회의록]",
-                "계약정보": "2013년 만료 후 무계약 상태 유지(당사에 유리). 2% FOC 제공으로 품질 책임 면책. 제품 40% 선금, 60% 90일 OA.",
-                "관리자포인트": "12주 Rolling FCST 정착을 통한 장납기 자재 확보 및 미국 관세 15% 분담 요청에 대한 수익성 방어 시나리오 수립."
-            },
-            {
-                "업체명": "Zepter International",
-                "국가": "유럽, 러시아",
-                "CEO": "Jankovic Milisav / 스위스 Wollerau",
-                "라인업": "프리미엄 청정기(AP-1004), 정수기(PWC-670 Black/Gold)",
-                "매출분석": "전쟁 반사이익으로 러시아 판매 급증. 25년 전망 3,358 K$ (계획비 231%). 필터 마진 60.4%로 본체 마진 열악함을 상쇄 중. [사업계획/손익]",
-                "매출그래프": "21년 실적: 4,384 K$ |■■■■■■■■■■■■■■■■■■■■\n22년 실적: 1,967 K$ |■■■■■■■■■\n25년 전망: 3,358 K$ |■■■■■■■■■■■■■■■\n26년 계획: 2,700 K$ |■■■■■■■■■■■■",
-                "판매량그래프": "[AP-1004 청정기]\n'21: 23,598대 |■■■■■■■■■■■■■■■\n'24:  3,726대 |■■\n[PWC-670 정수기]\n'21:  6,210대 |■■■■\n'24:  9,660대 |■■■■■■",
-                "현재상태": "Superior RO 및 Circle 2 등 신제품 샘플 공급 완료. 전 세계 13만 컨설턴트 네트워크 리브랜딩 가속화. [주간보고]",
-                "이슈": "EU BPR 규제로 기존 항균 필터 중단 위기. Biocote 마스터배치 적용 및 £0.24 원가 인상 반영 협상 중. [회의록]",
-                "계약정보": "2006/2011년 고구려 계약으로 해지 조항 부재. 선적 전 30% 선금, B/L 후 30일 조건이나 상습 연체 주의.",
-                "관리자포인트": "유럽 규제 대응 항균 필터 솔루션 조속 확정 및 연체 방지를 위한 결제 조건 변경 리스크 재무 점검."
+                "주력제품": "비데 (S1400, S1200, S1000), 정수기 (Circle), 청정기 (Breeze)",
+                "매출분석": "25년 전망 6,121 K$로 초과 달성 유력. 26년 1분기 계획(1,163 K$) 대비 전망(1,314 K$) 113% 달성 페이스 유지 중. [사업계획]",
+                "매출그래프": "24실적: 4,205 K$ |■■■■■■■■\n25전망: 6,121 K$ |■■■■■■■■■■■\n26계획: 6,000 K$ |■■■■■■■■■■■",
+                "판매량그래프": "[K$ 월간/분기 통합 관리 모드]\nS1400 3월 조기 선적 추진: $192K (1,060대)\n필터/부품 소모품 마진으로 수익 보전 중",
+                "운영현황": "코스트코 오프라인 진입용 써클 정수기 지종 변경(Brown) 및 더미 사양 파생 준비. 킹덤 벽걸이 청정기 2분기 개발 착수 목표. [주간보고]",
+                "이슈": "코스트코 CoC 심사 불합격(비상구/인사서류) 대응 재심사 대기 중. 리즈법 대응 P-160 파우셋 사양 확정 및 신규 로고 인쇄물 동시 변경. [회의록]",
+                "계약정보": "2013년 만료 후 무계약 유지(면책 조항 유리). 40% T/T(선적 10일 전), 60% OA 90일.",
+                "관리자포인트": "8~12주 장납기 자재(팬모터, PBA)에 대해 1개월치 안전재고 추가 확보 운영안 유구자재팀과 확정하여 생산 지연 원천 봉쇄."
             },
             {
                 "업체명": "SAMNAN",
                 "국가": "사우디아라비아",
                 "CEO": "Abdul Latif / Riyadh",
-                "라인업": "정수기 (빌라엠2, 윈디3, 코어 등)",
-                "매출분석": "사우디 비전 2030 주택 사업 B2G 계약으로 25년 전망 1,082 K$ (155% 달성). 완제품 이익률 30.6% 기록 중. [사업계획]",
-                "매출그래프": "23년 실적: 1,585 K$ |■■■■■■■■■■■■■■■■■■■■\n24년 실적:   670 K$ |■■■■■■■■\n25년 전망: 1,082 K$ |■■■■■■■■■■■■■■\n26년 계획: 1,200 K$ |■■■■■■■■■■■■■■■",
-                "판매량그래프": "[빌라엠2]\n'23: 1,800대 |■■■■■■■■■■\n'24:   500대 |■■\n[윈디3]\n'24: 1,030대 |■■■■■■",
-                "현재상태": "코어플러스 및 마이아이스 등 5종 신제품 현지 테스트 진행. 온라인 D2C 점유율 50% 이상 유지 중. [주간보고]",
-                "이슈": "대금 결제 지연 및 예측 불가한 오더 구조로 SCM 난항. 아마존 FBA 직접 진출 전략과 파트너 채널 상충 조율 필요. [회의록]",
-                "계약정보": "L/C at Sight. 2+1년 갱신 완료(MPA 200만 불). 워런티용 2% FOC 부품 지원 합의.",
-                "관리자포인트": "B2G 프로젝트 납기 사수를 위한 분기별 오더 가시성 확보 및 고정 환율(1,150원) 적용 단가표 준수 관리."
+                "주력제품": "정수기 (빌라엠2, 윈디3, 코어), 코어플러스, 마이아이스",
+                "매출분석": "26년 PO 1.98M$ 조기 입수(계획비 165%). 1분기 451 K$ 달성으로 강력 우상향세. 매출총이익률 27~34% 수준 유지. [손익/계획]",
+                "매출그래프": "24실적:   670 K$ |■■■■■■■■\n25전망: 1,082 K$ |■■■■■■■■■■■■■■\n26계획: 1,200 K$ |■■■■■■■■■■■■■■■",
+                "판매량그래프": "[CHP-18AR 빌라엠2]\n'25전망: 1,300대 |■■■■■■■■■■■■■\n'26계획:   400대 |■■■■\n[CHP-6330R 윈디3]\n'24실적: 1,030대 |■■■■■■■■■■",
+                "운영현황": "사우디 아마존(Amazon KSA) 청정기 직접 진출 전략 수립 완료. LX판토스 물류 네고(9.5% 할인) 및 IOR 셋업 진행 중. [주간보고]",
+                "이슈": "호르무즈 해협 위기로 인한 해상 물류 우회(Damman→Jeddah) 수배 중. 윈디3 TDS Adjustor 오버플로우 셧다운 및 온수 버튼 이탈 개선. [회의록]",
+                "계약정보": "L/C at Sight. 2+1년 갱신 합의(MPA 200만 불). 환율 1,150원 고정 단가표 적용 중.",
+                "관리자포인트": "사우디 특성 사양(SASO 기준 TDS Adjustor) 탑재 신제품 6월 초도 양산 밀착 지휘 및 직접 진출 시 파트너 채널 상충 방어."
+            },
+            {
+                "업체명": "Frootle India",
+                "국가": "인도",
+                "CEO": "Rahul Popat / Mumbai",
+                "주력제품": "청정기 (카트리지 AM150, 에임, 미니스톰, AM50/100)",
+                "매출분석": "26년 1분기 3,046 K$ (달성률 91%) 기록. 1월 라스트 물량 밀어내기 조기 선적 집중 성공. [사업계획]",
+                "매출그래프": "24실적: 2,965 K$ |■■■■■■■■■■■■\n25전망: 4,474 K$ |■■■■■■■■■■■■■■■■■■■\n26계획: 4,760 K$ |■■■■■■■■■■■■■■■■■■■■",
+                "판매량그래프": "[Airmega 150 카트리지]\n'22실적: 22,716대 |■■■■■■■■■■\n'23실적:  5,328대 |■■\n* AM50/100 리스크 오더 4만 대 발주 완료",
+                "운영현황": "인도 BIS 인증 강제 편입 대응 완료. 후속 AM50/100 뭄바이 등 5개 지역 필드 테스트 개시. 카트리지 금형 태국 3AC 이관 협의. [주간보고]",
+                "이슈": "BIS 인증 일정 지연 리스크. 동림 인니공장 심사 일정 단축 사수 필요. 인도 법인과 'Coway Airmega' 브랜드/CS 분리 작업 진행. [회의록]",
+                "계약정보": "OA 60days (90days 연장 요청 중). 뭄바이 출장 통한 공급계약서 세부 조항 최종 협의 중.",
+                "관리자포인트": "태국 3AC 리핏 금형 원가 네고($52 목표) 완료 및 인니 공장 BIS 인증 심사 일정 현지 대행사 통해 최대한 Pull-in."
             },
             {
                 "업체명": "RabbitAir",
                 "국가": "미국, 캐나다, 일본",
                 "CEO": "Edwin Cheung / Pasadena",
-                "라인업": "청정기 (에이스, 캐롯, 버니) 및 헤파 필터",
-                "매출분석": "필터 매출총이익률이 70%를 상회하는 압도적 Cash Cow. 26년 5,000 K$ 대 진입 목표. [손익실적]",
-                "매출그래프": "21년 실적: 10,402 K$ |■■■■■■■■■■■■■■■■■■■■\n22년 실적:  5,434 K$ |■■■■■■■■■■\n24년 실적:  4,477 K$ |■■■■■■■■\n25년 전망:  4,488 K$ |■■■■■■■■",
-                "판매량그래프": "[전체 제품군]\n* RabbitAir는 완제품 대수보다 \n매출액(K$) 및 필터 볼륨 위주 관리.\n'24년 MDF: $35K 책정",
-                "현재상태": "Energy Star 3.0 인증 테스트 미달로 라인업 재편 위기. 복제 불가 이중 구조 필터 도입으로 단가 방어 추진. [주간보고]",
-                "이슈": "HEPA 항균 소구 관련 소비자 소송 리스크 고조. 과거 성능 데이터 무결성 전수 조사 및 방어 로직 수립 중. [회의록]",
-                "계약정보": "4년 자동 갱신(2028년까지). 20% 선금, 80% 90일 OA 조건. 연 매출 1% 인센티브(MDF) 집행 중.",
-                "관리자포인트": "소비자 소송 대응용 성능 데이터 백업 및 수동적인 거래선 특성상 당사 주도의 신규 Pet 모델 기획 제안 필수."
+                "주력제품": "청정기 (에이스, 버니, 캐롯), 버니WiFi, 프리미엄 탈취 모델",
+                "매출분석": "26년 1분기 1,226 K$ (달성률 98%)로 견조. 필터/소모품 마진 기반의 핵심 Cash Cow 역할 수행 중. [손익실적]",
+                "매출그래프": "24실적: 4,477 K$ |■■■■■■■■■\n25전망: 4,488 K$ |■■■■■■■■■\n26계획: 5,000 K$ |■■■■■■■■■■",
+                "판매량그래프": "[필터 K$ 매출 중심 관리]\n'24년 MDF: $42K 지원\n미-중 관세 대응 필터 5% 한시 할인 적용",
+                "운영현황": "BioGS 2.0 WiFi 앱 버그 수정 및 재테스트 개시. 흡연자 특화 신규 모델에 일본 'Triple Fresh' 코팅 및 UV-C 적용 기획 중. [주간보고]",
+                "이슈": "HEPA 필터 항균 소구(EPA 위반) 소송 리스크 극심. 당사 면책 조항 레터 발송 완료. A3 펌웨어 에러(불량률 5.3%) 분석 중. [회의록]",
+                "계약정보": "자동갱신 4년 조항 유효성 검토 중(MPO 누락 건). 20% T/T 선금, 80% 90일 OA.",
+                "관리자포인트": "항균 소송 대응용 과거 성능 데이터 무결성 전수 조사 및 20% 관세 폭탄 대비 판가 인상 시나리오 수립."
             },
             {
                 "업체명": "Waternet",
                 "국가": "튀르키예, UAE",
                 "CEO": "Alp Saul / Istanbul",
-                "라인업": "정수기 (시루드라이버, 해리1, 코어, 모노 등)",
-                "매출분석": "튀르키예 렌탈 1위 위상 기반 25년 전망 6,097 K$ (계획비 142%). 튀르키예 마진율 75.5% 기록. [사업계획/손익]",
-                "매출그래프": "22년 실적: 2,947 K$ |■■■■■■■■■\n23년 실적: 3,847 K$ |■■■■■■■■■■■■\n24년 실적: 3,607 K$ |■■■■■■■■■■■\n25년 전망: 6,097 K$ |■■■■■■■■■■■■■■■■■■■",
-                "판매량그래프": "[튀르키예 정수기]\n'22: 6,650대 |■■■■■■■■\n'23: 7,497대 |■■■■■■■■■\n[중동 정수기]\n'23: 1,080대 |■\n'24: 3,014대 |■■■■",
-                "현재상태": "중동 파트 T/T 독자 결제 분리 성공. Deniz Bank 750대 B2B 입찰 및 스탠드 제품 윈백 진행 중. [주간보고]",
-                "이슈": "현금 유동성 부족으로 리징사 분산 결제 중. 시루드라이버 소음 및 밸브 체결 품질 이슈 대응 완료. [회의록]",
-                "계약정보": "2026-2028 3년 연장 최종 조율 중. L/C 180~360 days 조건. 연 매출 1% MDF 지원.",
-                "관리자포인트": "잦은 긴급 오더로 인한 SCM 혼선 방지를 위한 발주 시스템화 지원 및 마진 7%대 달성 목표 단가 협상 방어."
+                "주력제품": "정수기 (시루드라이버, 해리1, 코어), 코어플러스, 아이스미니",
+                "매출분석": "26년 1분기 튀르키예 159% 달성. ST 8,000 K$ 목표 달성 모멘텀 강력. 3개년 연장 계약 완료. [사업계획]",
+                "매출그래프": "24실적: 3,607 K$ |■■■■■■■■■■■\n25전망: 6,097 K$ |■■■■■■■■■■■■■■■■■■■\n26계획: 6,550 K$ |■■■■■■■■■■■■■■■■■■■■",
+                "판매량그래프": "[튀르키예 정수기 전체]\n'22실적: 6,650대 |■■■■■■■■\n'23실적: 7,497대 |■■■■■■■■■",
+                "운영현황": "코어 대체재 '코어플러스' 및 '워터스탠드 플러스' D등급 개발 확정. Deniz Bank 750대 B2B 은행 입찰 참여 중. [주간보고]",
+                "이슈": "호르무즈 봉쇄로 인한 물류 대란 이월. 튀르키예 L/C 오류 및 컨펌 지연으로 인한 SCM 출하 병목 현상 빈번. [회의록]",
+                "계약정보": "L/C 180-360 days. 2026-2028 연장 완료(누적 $24M 달성 시 자동연장).",
+                "관리자포인트": "은행 입찰 사수를 위한 샘플 적기 납품 및 시루드라이버 소음/밸브 체결 품질 이슈 후속 양산 필드 개선 모니터링."
             },
             {
-                "업체명": "V&B (Villeroy & Boch)",
-                "국가": "중국",
-                "CEO": "Frank Göring / 독일 본사",
-                "라인업": "프리미엄 비데 (L3CH, L6CH)",
-                "매출분석": "중국 부동산 침체 직격탄으로 25년 전망 950 K$ 하락. 26년 역성장 궤도 진입 (702 K$). [사업계획]",
-                "매출그래프": "23년 실적: 1,189 K$ |■■■■■■■■■■■■■■\n24년 실적: 1,649 K$ |■■■■■■■■■■■■■■■■■■■■\n25년 전망:   950 K$ |■■■■■■■■■■■\n26년 계획:   702 K$ |■■■■■■■■",
-                "판매량그래프": "[L3CH 비데]\n'23: 2,888대 |■■■■■■\n'24: 2,172대 |■■■■\n[L6CH 비데]\n'23: 1,920대 |■■■\n'24: 4,540대 |■■■■■■■■",
-                "현재상태": "신규 수주 전무, A/S 부품 오더로 연명. 비즈니스 정리를 위한 Exit Plan(출구 전략) 논의 단계. [주간보고]",
-                "이슈": "대규모 품질 클레임 보상 비율 최종 협의 중. 채권 회수 전 손실 확정 및 불용 자재 정산 이슈. [회의록]",
-                "계약정보": "2014년 최초 체결 후 금형 보유로 자동 연장 중. 결제 조건 OA 85days 구조.",
-                "관리자포인트": "장기 불용 자재 폐기 비용 청구 및 단종 후 부품 의무 공급 기간 설정 등 안전한 사업 종료 절차 관리."
+                "업체명": "Bork-Import LLC",
+                "국가": "러시아, 카자흐스탄",
+                "CEO": "Anton Kolmogorov / Moscow",
+                "주력제품": "안마의자 (페블체어), 안마베드, 듀얼클린(수출중단)",
+                "매출분석": "수출 통제로 1분기 선적 0 K$. 26년 급격한 역성장 궤도 진입 불가피. [사업계획]",
+                "매출그래프": "24실적: 2,042 K$ |■■■■■■■■■■■■■■■■■■■■\n25전망: 1,317 K$ |■■■■■■■■■■■■■\n26계획:   750 K$ |■■■■■■■",
+                "판매량그래프": "[청정기 수출 쿼터 전면 차단]\n안마 제품군 100% 전환 추진 중\n부클레 원단 페블체어 샘플 대응",
+                "운영현황": "주력 듀얼클린 모델 '가습기' 우회 분류 시도했으나 청정기로 최종 통제 판정. 중국산 안마의자(비제재) 위주 생존 모색 중. [주간보고]",
+                "이슈": "홍콩 경유 3국 우회 수출/결제 법무 검토 결과 '불가' 판정. 과거 선적분 최종사용자 이행보고서 산자부 제출 완료. [회의록]",
+                "계약정보": "25년 말 만료. 출하 전 85% 잔금 송금 특수 조건. PSSS 인스펙션 필수.",
+                "관리자포인트": "우회 수출 적발 사례 연루 방지를 위한 법무 가이드 철저 준수 및 중국산 안마의자 로트성 품질 사고 원천 봉쇄."
             }
         ];
 
@@ -163,49 +167,45 @@
                 <div class="p-card">
                     <div class="card-top">
                         <div>
+                            <span class="country-badge">${p.국가}</span>
                             <div class="partner-name">${p.업체명}</div>
-                            <div class="ceo-tag">👤 ${p.CEO}</div>
-                        </div>
-                        <span class="country-badge">${p.국가}</span>
-                    </div>
-
-                    <div class="section">
-                        <div class="section-header">📊 Revenue & Insight</div>
-                        <div class="main-info">${p.매출분석}</div>
-                        <div class="chart-box">
-                            <div class="chart-title">TOTAL REVENUE TREND (K$)</div>
-                            <div class="bar-chart">${p.매출그래프}</div>
+                            <div class="ceo-tag">👤 CEO: ${p.CEO}</div>
                         </div>
                     </div>
 
-                    <div class="section">
-                        <div class="section-header">📈 Unit Sales Tracking</div>
-                        <div class="chart-box" style="border-color: rgba(74,159,255,0.1);">
-                            <div class="chart-title" style="color: var(--accent);">MODEL-WISE VOLUME (Units)</div>
-                            <div class="bar-chart" style="color: var(--accent);">${p.판매량그래프}</div>
+                    <div class="info-section">
+                        <div>
+                            <div class="section-header">📊 Sales Intelligence</div>
+                            <div class="main-point">${p.매출분석}</div>
+                            <div class="chart-box">
+                                <div class="chart-title">Revenue Trend (K$)</div>
+                                <div class="bar-chart">${p.매출그래프}</div>
+                            </div>
+                            <div class="chart-box" style="border-color: rgba(74,159,255,0.1);">
+                                <div class="chart-title" style="color: var(--accent);">Unit Sales Tracking</div>
+                                <div class="bar-chart" style="color: var(--accent);">${p.판매량그래프}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="section-header">🕒 Operations Detail</div>
+                            <div class="desc-text">${p.운영현황}</div>
+                            <div class="section-header">📜 Contract & Logistics</div>
+                            <div class="contract-info">${p.계약정보}</div>
                         </div>
                     </div>
 
-                    <div class="section">
-                        <div class="section-header">🕒 Operations & Critical Issues</div>
-                        <div class="sub-info">${p.현재상태}</div>
-                        <div class="highlight">⚠️ 주요이슈: ${p.이슈}</div>
+                    <div class="highlight-danger">
+                        <strong>⚠️ Critical Issues:</strong><br>
+                        ${p.이슈}
                     </div>
 
-                    <div class="section">
-                        <div class="section-header">📜 Contract Information</div>
-                        <div class="contract-box">
-                            <div class="sub-info" style="color: #fff; font-size: 13px;">${p.계약정보}</div>
-                        </div>
-                    </div>
-
-                    <div class="admin-critical">
+                    <div class="admin-box">
                         <strong>🛡️ Admin Critical Focus</strong>
-                        <div class="sub-info" style="color: #fff; font-weight: 500;">${p.관리자포인트}</div>
+                        <div class="desc-text" style="color: #fff; font-weight: 500; margin-bottom: 0;">${p.관리자포인트}</div>
                     </div>
 
-                    <div class="lineup">
-                        📦 MAIN LINEUP: ${p.라인업}
+                    <div class="lineup-footer">
+                        📦 MAIN LINEUP: ${p.주력제품}
                     </div>
                 </div>
             `).join('');
