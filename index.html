@@ -3,233 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL OPS — World Time Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>GLOBAL OPS — Partner Intelligence Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=DM+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #080a0f; --card: #10131c; --card-hover: #161a27;
-            --border: rgba(255,255,255,0.06); --border-bright: rgba(255,255,255,0.12);
-            --text: #e8eaf0; --text-muted: #5a6070; --text-dim: #3a4050;
-            --accent-blue: #4a9fff; --accent-cyan: #00d4aa; --accent-amber: #ffb340;
-            --active: #00e887; --inactive: #2a3040;
-            --region-am: #4a9fff; --region-eu: #a78bfa; --region-me: #ffb340; --region-as: #00d4aa;
+            --bg: #05070a; --card: #0f121a; --card-hover: #161b26;
+            --accent: #4a9fff; --accent-dim: rgba(74, 159, 255, 0.1);
+            --text: #e8eaf0; --text-muted: #888ea8; --border: rgba(255,255,255,0.08);
+            --warning: #ffb340; --danger: #ff6b6b; --success: #00e887;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; min-height: 100vh; padding: 20px; overflow-x: hidden; }
-        .wrapper { max-width: 1480px; margin: 0 auto; }
+        body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; padding: 30px; line-height: 1.6; }
         
-        /* HEADER */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
-        .logo-group { display: flex; align-items: center; gap: 12px; }
-        .logo-mark { width: 32px; height: 32px; border-radius: 6px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #000; }
-        .logo-text { font-weight: 700; letter-spacing: 2px; font-size: 14px; text-transform: uppercase; }
-        .hdr-clock { font-family: 'DM Mono', monospace; color: var(--accent-cyan); font-size: 22px; text-align: right; }
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .logo-title { font-size: 28px; font-weight: 700; letter-spacing: -1px; }
+        .logo-title span { color: var(--accent); }
+        .search-bar { width: 450px; padding: 15px 25px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; color: #fff; font-size: 15px; outline: none; transition: 0.3s; }
+        .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(74,159,255,0.15); }
 
-        /* MAIN LAYOUT */
-        .main-layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; margin-top: 24px; }
+        /* Dashboard Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(600px, 1fr)); gap: 30px; }
         
-        /* MAP PANEL (보내주신 이미지 지형 반영) */
-        .map-panel { background: var(--card); border-radius: 16px; border: 1px solid var(--border-bright); padding: 25px; position: relative; }
-        .panel-label { font-size: 11px; color: var(--text-muted); letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        /* Card Structure */
+        .p-card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 35px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; display: flex; flex-direction: column; }
+        .p-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.4); background: var(--card-hover); }
         
-        #world-svg { width: 100%; height: auto; background: #0d111a; border-radius: 10px; display: block; }
-        /* 육지 색상을 보내주신 이미지처럼 밝은 회색으로 설정 */
-        .land { fill: #c0c0c0; stroke: #fff; stroke-width: 0.2; }
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .country-badge { background: var(--accent-dim); color: var(--accent); padding: 5px 15px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        .partner-name { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+        .ceo-tag { font-size: 14px; color: var(--text-muted); margin-top: 4px; font-weight: 400; }
+
+        /* Content Sections */
+        .section { margin-bottom: 25px; }
+        .section-header { font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+        .section-header::after { content: ""; flex: 1; height: 1px; background: var(--border); }
         
-        /* SEOUL CARD */
-        .seoul-card { background: var(--card); border-radius: 16px; border: 1px solid var(--accent-cyan); padding: 30px; text-align: center; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
-        .seoul-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--accent-cyan); }
-        .seoul-time { font-family: 'DM Mono', monospace; font-size: 42px; color: #fff; margin: 15px 0; letter-spacing: -1px; }
+        .main-info { font-size: 15px; color: var(--text); margin-bottom: 15px; }
+        .sub-info { font-size: 14px; color: var(--text-muted); text-align: justify; }
 
-        /* CALCULATOR */
-        .calc-bar { background: var(--card); margin-top: 20px; padding: 18px 25px; border-radius: 12px; display: flex; align-items: center; gap: 20px; border: 1px solid var(--border); }
-        .calc-bar input { background: #1a1f2e; border: 1px solid var(--border-bright); color: #fff; padding: 10px; border-radius: 6px; outline: none; font-family: 'DM Mono'; }
-        .calc-bar button { background: var(--accent-blue); border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 700; color: #000; transition: 0.2s; }
-        .calc-bar button:hover { opacity: 0.8; transform: translateY(-1px); }
+        /* Charts */
+        .chart-box { background: #05070a; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-top: 10px; }
+        .chart-title { font-size: 10px; color: var(--success); margin-bottom: 8px; font-weight: 700; opacity: 0.8; }
+        .bar-chart { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--success); line-height: 1.5; white-space: pre; }
 
-        /* REGION SECTION */
-        .region-group { margin-top: 40px; }
-        .region-title { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; font-size: 12px; letter-spacing: 3px; color: var(--text-muted); font-weight: 600; }
-        .region-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
-        .card { background: var(--card); border: 1px solid var(--border); padding: 24px; border-radius: 16px; transition: 0.3s; position: relative; }
-        .card:hover { background: var(--card-hover); transform: translateY(-5px); border-color: var(--border-bright); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        
-        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .city-name { font-weight: 600; font-size: 17px; letter-spacing: -0.02em; }
-        
-        .status { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 4px; border: 1px solid; letter-spacing: 0.5px; }
-        .status.on { color: var(--active); border-color: rgba(0,232,135,0.3); background: rgba(0,232,135,0.08); }
-        .status.off { color: var(--text-dim); border-color: var(--inactive); }
-        
-        .time { font-family: 'DM Mono', monospace; font-size: 32px; margin-bottom: 8px; letter-spacing: -1px; }
-        .date { font-size: 11px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
-        .offset { font-size: 9px; color: var(--text-dim); margin-top: 10px; font-family: 'DM Mono'; border-top: 1px solid var(--border); padding-top: 10px; }
-
-        @media (max-width: 1000px) { .main-layout { grid-template-columns: 1fr; } }
-    </style>
-</head>
-<body>
-    <div class="wrapper">
-        <header>
-            <div class="logo-group">
-                <div class="logo-mark">G</div>
-                <div class="logo-text">Global OPS Dashboard</div>
-            </div>
-            <div class="hdr-clock" id="hdr-clock">00:00:00</div>
-        </header>
-
-        <div class="main-layout">
-            <div class="map-panel">
-                <div class="panel-label"><span>🌍</span> Real-time Market Map</div>
-                <svg id="world-svg" viewBox="0 0 1000 500">
-                    <path class="land" d="M158,118 L185,114 L206,120 L212,134 L205,150 L188,156 L168,152 L156,140 L155,128 Z M52,158 L90,152 L128,148 L162,152 L182,166 L198,186 L204,208 L196,228 L183,244 L168,258 L156,272 L148,292 L142,314 L134,328 L120,338 L106,332 L96,314 L88,296 L78,278 L66,262 L54,246 L46,228 L43,208 L46,186 L52,168 Z M154,344 L176,338 L200,340 L222,350 L236,368 L246,390 L250,416 L248,442 L240,466 L226,484 L210,498 L196,500 L182,490 L172,472 L164,448 L160,422 L156,394 L152,368 L150,352 Z M468,136 L480,132 L494,136 L496,152 L488,162 L475,160 L466,150 Z M436,160 L464,154 L492,156 L512,164 L526,176 L524,190 L514,202 L500,208 L484,216 L468,220 L450,216 L438,204 L432,190 L432,174 Z M488,128 L550,122 L620,118 L690,120 L748,124 L790,132 L818,142 L828,156 L820,170 L800,178 L770,182 L738,182 L706,180 L674,184 L644,190 L612,192 L580,188 L550,184 L522,182 L500,188 L488,196 L480,186 L480,164 L484,144 Z M522,216 L556,212 L582,216 L596,226 L594,238 L578,244 L558,240 L538,234 L524,224 Z M560,264 L594,254 L616,262 L630,278 L632,300 L620,318 L600,326 L580,320 L564,304 L556,282 Z M452,226 L492,220 L524,224 L544,238 L552,260 L548,288 L538,318 L528,350 L518,380 L512,410 L510,440 L508,464 L500,482 L488,492 L474,488 L460,472 L450,450 L444,422 L442,394 L440,364 L436,336 L432,308 L430,278 L432,254 L440,238 Z M616,230 L644,224 L668,232 L678,248 L680,270 L670,292 L654,308 L636,312 L620,300 L610,280 L610,254 Z M706,180 L752,176 L792,182 L820,192 L832,208 L828,226 L812,236 L788,242 L760,242 L736,238 L714,230 L700,216 L698,200 Z M756,408 L802,398 L840,402 L868,416 L880,438 L878,462 L862,480 L838,490 L810,492 L782,486 L760,470 L746,448 L744,426 Z"/>
-                    <g id="pins-layer"></g>
-                </svg>
-            </div>
-            <div class="seoul-card">
-                <div style="font-size:11px; color:var(--accent-cyan); letter-spacing: 2px; text-transform: uppercase;">Home Base</div>
-                <h2 style="font-size:28px; font-weight:700; margin-top:5px;">Seoul, KR</h2>
-                <div class="seoul-time" id="seoul-time">00:00:00</div>
-                <div class="date" id="seoul-date" style="font-size:14px;">---</div>
-            </div>
-        </div>
-
-        <div class="calc-bar">
-            <span style="font-size:13px; font-weight:600;">⏱ 시차 계산기 (서울 기준 시간 입력) :</span>
-            <input type="time" id="calc-input">
-            <button onclick="applyCalc()">전체 도시 적용</button>
-            <button onclick="resetCalc()" style="background:none; color:var(--text-muted); border:1px solid var(--border);">실시간 초기화</button>
-        </div>
-
-        <div id="regions-wrap"></div>
-    </div>
-
-    <script>
-        const REGIONS = [
-            { id:'am', label:'AMERICAS', color:'#4a9fff', cities:[
-                { name:'Dominican Republic', tz:'America/Santo_Domingo', lat:18.5, lon:-69.9 },
-                { name:'Los Angeles', tz:'America/Los_Angeles', lat:34.1, lon:-118.2 },
-                { name:'San Francisco', tz:'America/Los_Angeles', lat:37.8, lon:-122.4 }
-            ]},
-            { id:'eu', label:'EUROPE', color:'#a78bfa', cities:[
-                { name:'Amsterdam', tz:'Europe/Amsterdam', lat:52.4, lon:4.9 },
-                { name:'Barcelona', tz:'Europe/Madrid', lat:41.4, lon:2.2 },
-                { name:'Geneva', tz:'Europe/Zurich', lat:46.2, lon:6.1 },
-                { name:'London', tz:'Europe/London', lat:51.5, lon:-0.1 },
-                { name:'Moscow', tz:'Europe/Moscow', lat:55.8, lon:37.6 },
-                { name:'Stockholm', tz:'Europe/Stockholm', lat:59.3, lon:18.1 }
-            ]},
-            { id:'me', label:'MIDDLE EAST & AFRICA', color:'#ffb340', cities:[
-                { name:'Angola', tz:'Africa/Luanda', lat:-8.8, lon:13.2 },
-                { name:'Dubai', tz:'Asia/Dubai', lat:25.3, lon:55.3 },
-                { name:'Istanbul', tz:'Europe/Istanbul', lat:41.0, lon:29.0 },
-                { name:'Riyadh', tz:'Asia/Riyadh', lat:24.7, lon:46.7 }
-            ]},
-            { id:'as', label:'ASIA & OCEANIA', color:'#00d4aa', cities:[
-                { name:'Melbourne', tz:'Australia/Melbourne', lat:-37.8, lon:144.9 },
-                { name:'Mumbai', tz:'Asia/Kolkata', lat:19.1, lon:72.9 },
-                { name:'Shanghai', tz:'Asia/Shanghai', lat:31.2, lon:121.5 },
-                { name:'Sydney', tz:'Australia/Sydney', lat:-33.9, lon:151.2 }
-            ]}
-        ];
-
-        let calcOffset = 0;
-        const xy = (lat, lon) => ({ 
-            x: (lon + 180) * (1000 / 360), 
-            y: (90 - lat) * (500 / 180) 
-        });
-
-        function init() {
-            const wrap = document.getElementById('regions-wrap');
-            const pins = document.getElementById('pins-layer');
-            wrap.innerHTML = ''; pins.innerHTML = '';
-
-            REGIONS.forEach(reg => {
-                const group = document.createElement('div');
-                group.className = 'region-group';
-                group.innerHTML = `<div class="region-title">${reg.label}</div><div class="grid" id="grid-${reg.id}"></div>`;
-                wrap.appendChild(group);
-
-                reg.cities.forEach((c, i) => {
-                    const grid = document.getElementById(`grid-${reg.id}`);
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <div class="card-top">
-                            <div class="city-name">${c.name}</div>
-                            <div class="status" id="st-${reg.id}-${i}">OFF</div>
-                        </div>
-                        <div class="time" id="tm-${reg.id}-${i}">00:00</div>
-                        <div class="date" id="dt-${reg.id}-${i}">---</div>
-                        <div class="offset" id="of-${reg.id}-${i}">-0h vs Seoul</div>
-                    `;
-                    grid.appendChild(card);
-
-                    const pos = xy(c.lat, c.lon);
-                    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    dot.setAttribute("cx", pos.x); dot.setAttribute("cy", pos.y); dot.setAttribute("r", 4.5);
-                    dot.setAttribute("fill", reg.color);
-                    dot.style.filter = `drop-shadow(0 0 3px ${reg.color})`;
-                    pins.appendChild(dot);
-                    
-                    const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    txt.setAttribute("x", pos.x + 8); txt.setAttribute("y", pos.y + 4);
-                    txt.setAttribute("fill", "#fff"); txt.setAttribute("font-size", "11");
-                    txt.setAttribute("font-weight", "600");
-                    txt.style.textShadow = "0 0 3px #000";
-                    txt.textContent = c.name;
-                    pins.appendChild(txt);
-                });
-            });
-            update();
-            setInterval(update, 1000);
-        }
-
-        function update() {
-            const now = new Date(Date.now() + calcOffset);
-            const seoulTime = now.toLocaleTimeString('en-GB', {timeZone:'Asia/Seoul'});
-            document.getElementById('hdr-clock').textContent = seoulTime;
-            document.getElementById('seoul-time').textContent = seoulTime;
-            document.getElementById('seoul-date').textContent = now.toLocaleDateString('ko-KR', {weekday:'long', month:'long', day:'numeric'});
-
-            REGIONS.forEach(reg => {
-                reg.cities.forEach((c, i) => {
-                    const timeStr = now.toLocaleTimeString('en-GB', {timeZone:c.tz, hour:'2-digit', minute:'2-digit'});
-                    const hour = parseInt(timeStr.split(':')[0]);
-                    
-                    // 시차 계산용
-                    const seoulNow = new Date(now.toLocaleString('en-US', {timeZone:'Asia/Seoul'}));
-                    const cityNow = new Date(now.toLocaleString('en-US', {timeZone:c.tz}));
-                    const diff = Math.round((cityNow - seoulNow) / 3600000);
-
-                    document.getElementById(`tm-${reg.id}-${i}`).textContent = timeStr;
-                    document.getElementById(`dt-${reg.id}-${i}`).textContent = now.toLocaleDateString('en-GB', {timeZone:c.tz, month:'short', day:'numeric'});
-                    document.getElementById(`of-${reg.id}-${i}`).textContent = `${diff >= 0 ? '+' + diff : diff}h vs Seoul`;
-                    
-                    const isOpen = hour >= 9 && hour < 18;
-                    const st = document.getElementById(`st-${reg.id}-${i}`);
-                    st.textContent = isOpen ? 'OPEN' : 'OFF';
-                    st.className = `status ${isOpen ? 'on' : 'off'}`;
-                });
-            });
-        }
-
-        function applyCalc() {
-            const val = document.getElementById('calc-input').value;
-            if(!val) return;
-            const [h, m] = val.split(':').map(Number);
-            const seoulNow = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Seoul"}));
-            const target = new Date(seoulNow);
-            target.setHours(h, m, 0, 0);
-            calcOffset = target - seoulNow;
-            update();
-        }
-
-        function resetCalc() { calcOffset = 0; document.getElementById('calc-input').value = ''; update(); }
-
-        init();
-    </script>
-</body>
-</html>
+        /* Highlights & Admin */
+        .highlight { background: rgba(255, 179, 64, 0.07); border-left: 4px solid var(--warning); padding: 15px; border-radius: 4px; margin: 10px 0; font-size: 14px; }
+        .contract-box { background: rgba(232, 234, 240, 0.03); border-radius: 12px; padding: 2
