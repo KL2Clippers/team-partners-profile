@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>GLOBAL OPS — Partner Intelligence Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080a0f; --card: #11141d; --card-hover: #1a1f2e;
+            --accent: #4a9fff; --accent-dim: rgba(74, 159, 255, 0.1);
+            --text: #e8eaf0; --text-muted: #888ea8; --border: rgba(255,255,255,0.08);
+            --warning: #ffb340; --danger: #ff6b6b; --success: #00e887;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; padding: 30px; line-height: 1.6; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .search-bar { width: 400px; padding: 15px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; color: #fff; font-size: 15px; outline: none; transition: 0.3s; }
+        .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(74,159,255,0.2); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); gap: 25px; }
+        .p-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 30px; transition: 0.3s; position: relative; }
+        .p-card:hover { transform: translateY(-8px); border-color: var(--accent); background: var(--card-hover); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .country-tag { background: var(--accent-dim); color: var(--accent); padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .partner-name { font-size: 24px; font-weight: 700; margin-top: 10px; color: #fff; }
+        .section-title { font-size: 12px; color: var(--accent); font-weight: 700; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+        .section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+        .content-text { font-size: 14px; color: var(--text-muted); margin-bottom: 10px; text-align: justify; }
+        .chart-area { font-family: 'DM Mono', monospace; background: #080a0f; padding: 15px; border-radius: 10px; font-size: 12px; color: var(--success); overflow-x: auto; margin-top: 10px; border: 1px solid rgba(0,232,135,0.1); white-space: pre; }
+        .highlight-box { background: rgba(255, 179, 64, 0.05); border-left: 3px solid var(--warning); padding: 15px; border-radius: 4px; margin: 15px 0; font-size: 14px; color: #fff; }
+        .admin-focus { background: rgba(74, 159, 255, 0.08); border: 1px dashed var(--accent); padding: 20px; border-radius: 12px; margin-top: 25px; }
+        .admin-focus strong { color: var(--accent); display: block; margin-bottom: 8px; font-size: 13px; text-transform: uppercase; }
+        .meta-info { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); font-size: 12px; color: var(--accent); font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1 style="font-size: 28px; letter-spacing: -1px;">PARTNER <span style="color: var(--accent);">INTELLIGENCE</span></h1>
+            <p style="color: var(--text-muted); font-size: 14px; margin-top: 5px;">3사업본부 주요 거래선 통합 프로파일링 (NotebookLM 기반)</p>
+        </div>
+        <input type="text" class="search-bar" id="searchInput" placeholder="업체명, 국가, 키워드 검색...">
+    </div>
+
+    <div class="grid" id="partnerGrid"></div>
+
+    <script>
+        // 팀장님이 NotebookLM에서 가져오신 정밀 데이터
+        const partners = [
+            {
+                "업체명": "Brondell",
+                "국가": "미국, 캐나다",
+                "주력제품": "비데(S1400, S1000), 정수기(P-160L), 청정기(APM-1514G)",
+                "매출추이": "2025년 전망 6,121 K$로 계획 대비 159% 초과 달성 유력.",
+                "매출그래프": "2021 실적 :  8,642 K$ |■■■■■■■■■■■■■■■■\n2022 실적 : 10,776 K$ |■■■■■■■■■■■■■■■■■■■■\n2025 전망 :  6,121 K$ |■■■■■■■■■■■\n2026 계획 :  6,000 K$ |■■■■■■■■■■■",
+                "현재상태": "코스트코 GMP 재심사 준비 및 리테일러 대상 서클 매트 블랙 신규 SKU 제안 중.",
+                "주요이슈": "EPA 규제 변경 및 리즈법 대응 인쇄물 긴급 변경 진행. 캐나다 누수 사고 보험 대응 중.",
+                "관리포인트": "12주 단위 Rolling FCST 체계 구축을 통한 장납기 자재 안전 재고 선제 확보."
+            },
+            {
+                "업체명": "Zepter International",
+                "국가": "유럽, 러시아 (스위스 본사)",
+                "주력제품": "정수기(P-07CL), 청정기(AP-1004AHZPT/ACE)",
+                "매출추이": "러시아 전쟁 반사이익으로 판매 반등. 2025년 전망 3,358 K$ (사업계획비 231%).",
+                "매출그래프": "2021 실적 :  4,384 K$ |■■■■■■■■■■■■■■■■■■■■\n2024 실적 :  1,869 K$ |■■■■■■■■■\n2025 전망 :  3,358 K$ |■■■■■■■■■■■■■■■\n2026 계획 :  2,700 K$ |■■■■■■■■■■■■",
+                "현재상태": "Superior 600GPD 및 Circle II 신규 제안 샘플 공급 완료. 자금 운영 리스크 존재.",
+                "주요이슈": "EU 규제 갱신에 따른 Biocote 항균 솔루션 개발 시급. 제품당 £0.24 원가 상승 예상.",
+                "관리포인트": "항균 마스터배치 구매 프로세스 조속 확정 및 빈번한 대금 연체 관리(결제 조건 조정)."
+            },
+            {
+                "업체명": "SAMNAN",
+                "국가": "사우디아라비아",
+                "주력제품": "정수기(빌라엠2, 윈디3, 코어 등)",
+                "매출추이": "2025년 전망 1,082 K$ (계획비 153%). 사우디 주택부 B2G 계약 성공 영향.",
+                "매출그래프": "2023 실적 :  1,585 K$ |■■■■■■■■■■■■■■■■■■■■\n2024 실적 :    670 K$ |■■■■■■■■\n2025 전망 :  1,082 K$ |■■■■■■■■■■■■■■\n2026 계획 :  1,200 K$ |■■■■■■■■■■■■■■■",
+                "현재상태": "코어플러스 및 슈페리어 파생 개발 진행 중. 사우디 독자 진출(FBA) 전략 수립 중.",
+                "주요이슈": "윈디3 TDS Adjustor 오버플로우 문제 및 빌라엠2 온수 버튼 탈락 이슈 개선.",
+                "관리포인트": "B2G 프로젝트 납기 지연 방지를 위한 오더-생산 일정 관리 및 직접 진출 채널 조율."
+            },
+            {
+                "업체명": "RabbitAir",
+                "국가": "미국, 캐나다, 일본",
+                "주력제품": "청정기(Minus A2, A3, BioGS 2.0)",
+                "매출추이": "2025년 전망 4,488 K$. 필터 판매가 전체 매출의 압도적 과반 차지.",
+                "매출그래프": "2021 실적 : 10,402 K$ |■■■■■■■■■■■■■■■■■■■■\n2023 실적 :  3,134 K$ |■■■■■■\n2025 전망 :  4,488 K$ |■■■■■■■■■\n2026 계획 :  5,000 K$ |■■■■■■■■■■",
+                "현재상태": "에너지스타 3.0 대응 불가로 인증 포기. 수익성 개선 위한 한시적 단가 인하 협상 완료.",
+                "주요이슈": "헤파 필터 항균 마케팅 관련 EPA 규제 위반 소송 리스크. 정품 로고 인쇄로 위조 방지.",
+                "관리포인트": "항균 소송 리스크 방어 로직 세팅 및 아마존 FBA CRD(3주) 납기 준수 시스템 구축."
+            },
+            {
+                "업체명": "Bork-Import LLC",
+                "국가": "러시아, 카자흐스탄",
+                "주력제품": "안마의자(페블체어), 노블가습, 노블청정",
+                "매출추이": "2026년 급감 예상(750 K$). 서방 제재 심화로 한국발 직수출 위기.",
+                "매출그래프": "2023 실적 :  1,861 K$ |■■■■■■■■■■■■■■■■■■\n2024 실적 :  2,042 K$ |■■■■■■■■■■■■■■■■■■■■\n2025 전망 :  1,317 K$ |■■■■■■■■■■■■■\n2026 계획 :    750 K$ |■■■■■■■",
+                "현재상태": "상황허가 취득해 청정기 간신히 수출 중. 중국 생산 안마의자로 사업 포트폴리오 재편.",
+                "주요이슈": "페블체어 용접 불량 및 안마베드 전압 이슈 발생. 우회 대금 결제 루트 리스크 관리.",
+                "관리포인트": "청정기 수출 금지 대비 가습기 품목분류 우회 전략 및 합법적 대금 송금 루트 검증."
+            },
+            {
+                "업체명": "Frootle India",
+                "국가": "인도",
+                "주력제품": "청정기(Airmega 150, 미니스톰, 에임, 콜롬비아)",
+                "매출추이": "2025년 전망 4,474 K$. 전년비 126% 성장세 지속.",
+                "매출그래프": "21년: 2,460 K$ |■■■■■■■■■■\n24년: 2,965 K$ |■■■■■■■■■■■■\n25전: 4,474 K$ |■■■■■■■■■■■■■■■■■■■\n26계: 4,760 K$ |■■■■■■■■■■■■■■■■■■■■",
+                "현재상태": "인도 BIS 인증 강제 대상 편입(내년 3월) 대응 중. 신규 모델 AM50/100 파생 개발.",
+                "주요이슈": "BIS 인증 전 중국산 라스트 선적 추진. AM50 아답터 사양 신뢰성 검토 중.",
+                "관리포인트": "BIS 공장 심사 일정 Pull-in 및 초도물량 4만 대 인니 공장 납기 모니터링."
+            },
+            {
+                "업체명": "Albion Nordic",
+                "국가": "북유럽 (스웨덴, 덴마크 등)",
+                "주력제품": "청정기(AP-1008CH, 미니스톰, 챔프, 매그넘)",
+                "매출추이": "2025년 전망 1,714 K$. 1분기 80% 성장하며 강한 회복세.",
+                "매출그래프": "21년: 2,943 K$ |■■■■■■■■■■■■■■■■■■■■\n24년:   707 K$ |■■■■■\n25전: 1,714 K$ |■■■■■■■■■■■■\n26계: 1,900 K$ |■■■■■■■■■■■■■",
+                "현재상태": "북유럽 3대 가전 리테일러 입점 집중. AM50(와플콘 미니) 5월 출시 협의.",
+                "주요이슈": "AM100 품질 이슈 보상 타결 완료($24K). 인니 공장 L/T 지연으로 출시 골든타임 우려.",
+                "관리포인트": "인니 공장 L/T 9주 이내 단축 협의 및 Prisjakt 1위 마케팅 배지 전략 적극 활용."
+            },
+            {
+                "업체명": "Waternet",
+                "국가": "튀르키예, UAE",
+                "주력제품": "정수기(시루드라이버, 해리1, 코어, 글로벌P)",
+                "매출추이": "2025년 전망 5,669 K$ (사업계획비 142% 달성 유력).",
+                "매출그래프": "21년: 1,421 K$ |■■■■\n24년: 3,607 K$ |■■■■■■■■■■■\n25전: 6,097 K$ |■■■■■■■■■■■■■■■■■■■\n26계: 6,550 K$ |■■■■■■■■■■■■■■■■■■■■",
+                "현재상태": "코어 대체용 코어플러스 개발 중. 중동 파트는 100% T/T 독자 결제로 분리.",
+                "주요이슈": "유동성 부족으로 리징사 분산 결제 중. 시루드라이버 펜 모터 소음 긴급 조치.",
+                "관리포인트": "자금 문제로 인한 선복 취소 방어 및 3개월 롤링 FCST 기반 자재 사전 확보."
+            },
+            {
+                "업체명": "ATH",
+                "국가": "스페인",
+                "주력제품": "정수기(칸, 서클, 메이트, 스위치, 슈페리어)",
+                "매출추이": "연간 100만 불 안팎 박스권 정체 중. 26년 계획 980 K$.",
+                "매출그래프": "24실:   927 K$ |■■■■■■■■■■■■■■■■■■■\n25전:   943 K$ |■■■■■■■■■■■■■■■■■■■\n26계:   980 K$ |■■■■■■■■■■■■■■■■■■■■",
+                "현재상태": "노후 라인업 전면 교체 중(칸→슈페리어, 메이트→스위치). 4월 스위치 런칭 준비.",
+                "주요이슈": "스위치(P-2200N) 피팅 변경 및 인쇄물 전면 교체로 양산 이관 병목 발생.",
+                "관리포인트": "D등급 파생 개발 선승인 푸시 및 WQA 프라이빗 라벨링 등 현지 인증 지원."
+            },
+            {
+                "업체명": "ESD",
+                "국가": "도미니카 공화국",
+                "주력제품": "정수기(바이칼, 코어, 윈디3, 글로벌P)",
+                "매출추이": "자금 악화로 전망 하회 우려(500 K$).",
+                "매출그래프": "23실:   393 K$ |■■■■■■■■■■\n24실:   413 K$ |■■■■■■■■■■■\n25전:   500 K$ |■■■■■■■■■■■■■\n26계:   750 K$ |■■■■■■■■■■■■■■■■■■■■",
+                "현재상태": "렌탈 비중 축소 및 일시불 판매(자가 관리)로 비즈니스 모델 전면 수정.",
+                "주요이슈": "대금 미지급으로 L/C 중단 및 선복 취소 반복. 노후 루시 모델 품질 이슈 폭증.",
+                "관리포인트": "생산 착수 2주 전 선금 100% 미확보 시 절대 양산 투입 금지 룰 준수."
+            },
+            {
+                "업체명": "Tafani",
+                "국가": "UAE (두바이)",
+                "주력제품": "청정기(AM400, 마이티), 정수기(빌라엠2, 윈디3)",
+                "매출추이": "수요예측 실패로 전망 하향(941 K$, 사업계획의 57% 예상).",
+                "매출그래프": "23년:   179 K$ |■■■\n24년:   607 K$ |■■■■■■■■■■■\n25전:   941 K$ |■■■■■■■■■■■■■■■■■\n26계: 1,100 K$ |■■■■■■■■■■■■■■■■■■■■",
+                "현재상태": "기말 재고 4.3천 대 소진 집중. 인도 아마존 1위 리뷰 연동 마케팅 추진 중.",
+                "주요이슈": "UAE ECAS LVE 규제 의무화 대응 완료. 저가 경쟁 이슈 인상 합의 중재 완료.",
+                "관리포인트": "디지털 마케팅 예산 증액 독려 및 Non-RO 냉온 정수기 타겟팅 강화."
+            },
+            {
+                "업체명": "Neutratech",
+                "국가": "앙골라, 나이지리아",
+                "주력제품": "정수기(윈디3, 글로벌P, 코어)",
+                "매출추이": "정세 불안 및 경제 악화로 역성장 중 (26년 계획 248 K$).",
+                "매출그래프": "24실:   414 K$ |■■■■■■■■■■■■■■■■■■■■\n25전:   369 K$ |■■■■■■■■■■■■■■■■■■\n26계:   248 K$ |■■■■■■■■■■■■",
+                "현재상태": "연료 가격 인상 및 폭력 시위로 판매 동력 상실. 모리셔스 지역만 명맥 유지.",
+                "주요이슈": "매출 부진에도 지속적인 필터 FOC 지원 요청. 수입 허가 발급 지연.",
+                "관리포인트": "100% 선금 수취 원칙 고수 및 현지 수입 인증 갱신 상황 상시 체크."
+            },
+            {
+                "업체명": "Entekhab (DL통상)",
+                "국가": "이란",
+                "주력제품": "청정기, 정수기 (진입 검토)",
+                "매출추이": "누적 실적 없음. 2026년 1.2M$ 시작 로드맵 수립 중.",
+                "매출그래프": "* 신규 거래선 발굴 및 초도 선적 검토 단계로 실적 데이터 부재",
+                "현재상태": "DL통상 선수금 수취 및 UAE 경유 우회 수출 플랜 수립 완료.",
+                "주요이슈": "트럼프 정부 출범 및 고강도 이란 제재 부활 예고로 사업 전개 무기한 보류.",
+                "관리포인트": "비즈니스 중단 국면에서도 이란 1위 업체와의 물밑 네트워크 교류 유지."
+            },
+            {
+                "업체명": "V&B",
+                "국가": "중국",
+                "주력제품": "비데 (L3CH, L6CH)",
+                "매출추이": "25년 전망 882 K$로 절반 급감. 하향 역성장 궤도 진입.",
+                "매출그래프": "23실:  1,189 K$ |■■■■■■■■■■■■■■\n24실:  1,649 K$ |■■■■■■■■■■■■■■■■■■■■\n25전:    882 K$ |■■■■■■■■■■■\n26계:    702 K$ |■■■■■■■■■",
+                "현재상태": "중국 부동산 경기 침체로 B2B 납품 올스톱. A/S 부품 오더만 접수 중.",
+                "주요이슈": "중국 내 대규모 품질 클레임 보상 비율 최종 협의 중. 손실 확정 필요.",
+                "관리포인트": "잔여 미수금 조속 회수 및 장기 불용 자재 폐기 등 안전한 Exit 전략 실행."
+            }
+        ];
+
+        function render(filter = "") {
+            const grid = document.getElementById('partnerGrid');
+            const filtered = partners.filter(p => 
+                p.업체명.toLowerCase().includes(filter.toLowerCase()) || 
+                p.국가.toLowerCase().includes(filter.toLowerCase()) ||
+                p.주요이슈.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="p-card">
+                    <div class="card-header">
+                        <span class="country-tag">${p.국가}</span>
+                        <div class="partner-name">${p.업체명}</div>
+                    </div>
+
+                    <div class="section-title">📊 SALES INSIGHT [NotebookLM]</div>
+                    <div class="content-text">${p.매출추이}</div>
+                    <div class="chart-area">${p.매출그래프}</div>
+
+                    <div class="section-title">🕒 CURRENT OPS & ISSUE</div>
+                    <div class="content-text">${p.현재상태}</div>
+                    <div class="highlight-box">${p.주요이슈}</div>
+
+                    <div class="admin-focus">
+                        <strong>🛡️ Admin Critical Focus</strong>
+                        <div class="content-text" style="color: #fff; font-size: 13px;">${p.관리포인트}</div>
+                    </div>
+
+                    <div class="meta-info">
+                        📦 MAIN LINEUP: ${p.주력제품}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('searchInput').oninput = (e) => render(e.target.value);
+        render();
+    </script>
+</body>
+</html>
