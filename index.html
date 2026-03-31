@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL OPS — Intelligence Center (Edit Mode)</title>
+    <title>GLOBAL OPS — Partner Intelligence Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -15,11 +15,10 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; padding: 30px; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
         
-        /* Header & Admin Controls */
+        /* Header & Controls */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; flex-wrap: wrap; gap: 20px; }
         .logo-title { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
         .logo-title span { color: var(--accent); }
-        
         .admin-controls { display: flex; gap: 10px; align-items: center; }
         .search-bar { width: 300px; padding: 10px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; color: #fff; font-size: 14px; outline: none; }
         
@@ -28,43 +27,41 @@
         .btn-edit { background: var(--accent); color: #000; }
         .btn-save { background: var(--success); color: #000; display: none; }
 
-        /* Dashboard Grid */
+        /* Grid & Card */
         .grid { display: grid; grid-template-columns: 1fr; gap: 40px; flex-grow: 1; }
         .p-card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 35px; position: relative; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Card Content */
         .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .country-group { display: flex; align-items: center; gap: 10px; }
         .country-badge { background: var(--accent-dim); color: var(--accent); padding: 5px 15px; border-radius: 100px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+        .local-clock { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--success); background: rgba(0,232,135,0.05); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0,232,135,0.1); }
         .partner-name { font-size: 34px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
         
         .info-section { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 25px; }
         .section-header { font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
         .section-header::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 
-        /* Edit Mode Styles */
         [contenteditable="true"] { border: 1px dashed var(--accent) !important; background: rgba(74,159,255,0.05); padding: 5px; border-radius: 4px; outline: none; }
 
         .chart-box { background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; font-family: 'DM Mono', monospace; color: var(--success); font-size: 12px; white-space: pre; }
         .highlight-danger { background: rgba(255, 107, 107, 0.08); border-left: 4px solid var(--danger); padding: 18px; border-radius: 8px; margin: 15px 0; font-size: 14px; }
         .admin-box { background: linear-gradient(135deg, rgba(74, 159, 255, 0.12), transparent); border: 1.5px dashed var(--accent); padding: 25px; border-radius: 20px; margin-top: 20px; }
 
-        /* Pagination */
         .pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 40px; padding-bottom: 40px; }
         .page-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; }
         .page-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
-        /* Config Modal */
         #configModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; }
         .modal-content { background: var(--card); padding: 30px; border-radius: 20px; width: 450px; border: 1px solid var(--accent); }
         .modal-content input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid var(--border); color: #fff; border-radius: 8px; }
 
-        @media (max-width: 1000px) { .info-section { grid-template-columns: 1fr; } .search-bar { width: 100%; } }
+        @media (max-width: 1000px) { .info-section { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1 class="logo-title">GLOBAL OPS <span>INTEL-CENTER</span></h1>
+        <h1 class="logo-title">GLOBAL OPS <span>INTEL-HUB</span></h1>
         <div class="admin-controls">
             <input type="text" class="search-bar" id="searchInput" placeholder="Search partners...">
             <button class="btn btn-config" onclick="toggleModal()">🔒 Settings</button>
@@ -78,172 +75,30 @@
 
     <div id="configModal">
         <div class="modal-content">
-            <h2 style="margin-bottom: 10px;">GitHub API Configuration</h2>
-            <p style="font-size: 13px; color: var(--text-muted);">수정 사항을 저장하려면 GitHub Personal Access Token(classic)이 필요합니다. (repo 권한 필수)</p>
-            <input type="password" id="ghToken" placeholder="GitHub Token (ghp_...)">
-            <input type="text" id="ghRepo" placeholder="Repository Path (e.g., User/Repo)">
+            <h2>GitHub Auth Settings</h2>
+            <input type="password" id="ghToken" placeholder="GitHub Personal Access Token">
+            <input type="text" id="ghRepo" placeholder="Repo Path (e.g., User/Repo)">
             <button class="btn btn-edit" style="width: 100%; margin-top: 15px; justify-content: center;" onclick="saveConfig()">Save Settings</button>
             <button class="btn" style="width: 100%; margin-top: 10px; background: none; justify-content: center;" onclick="toggleModal()">Close</button>
         </div>
     </div>
 
     <script>
-        // 초기 데이터 (14개 거래선 풀세트)
         let partners = [
-            {
-                "업체명": "Brondell", "국가": "USA, Canada", "CEO": "Steve Scheer",
-                "매출분석": "25년 전망 6,121 K$ (계획비 159% 초과). 26년 1분기 전망 1,314 K$로 목표 상회 중.",
-                "매출그래프": "24실적: 4,205 K$ |■■■■■■■■\n25전망: 6,121 K$ |■■■■■■■■■■■\n26계획: 6,000 K$ |■■■■■■■■■■■",
-                "판매량그래프": "S1400 3월 조기 선적: 1,060대 ($192K)\n필터/부품 소모품 마진으로 수익성 방어 중.",
-                "운영현황": "코스트코 오프라인 진입용 더미 사양 및 브라운 박스 파생 준비. 킹덤 청정기 2분기 개발 착수.",
-                "이슈": "코스트코 CoC 심사 불합격 대응 재심사 대기. 리즈법 대응 P-160 파우셋 사양 확정.",
-                "계약정보": "2013년 만료 후 무계약 유지(유리). 40% T/T, 60% OA 90일.",
-                "관리포인트": "장납기 자재(팬모터) 1개월치 추가 안전재고 확보 운영안 정착시켜 생산 지연 봉쇄.",
-                "주력제품": "Bidet (S1400/S1200), Water Purifier (Circle)"
-            },
-            {
-                "업체명": "SAMNAN", "국가": "Saudi Arabia", "CEO": "Abdul Latif",
-                "매출분석": "26년 PO 1.98M$ 조기 입수. 1분기 451 K$ 달성으로 강력한 성장세 기록 중.",
-                "매출그래프": "24실적:   670 K$ |■■■■■■■■\n25전망: 1,082 K$ |■■■■■■■■■■■■■■\n26계획: 1,200 K$ |■■■■■■■■■■■■■■■",
-                "판매량그래프": "[CHP-18AR] '25전: 1,300대 |■■■■■\n[윈디3]   '24실: 1,030대 |■■■■",
-                "운영현황": "사우디 아마존 청정기 직접 진출 전략 수립 및 물류(LX판토스) 네고 진행 중.",
-                "이슈": "호르무즈 해협 위기로 해상 물류 우회 수배. 윈디3 TDS Adjustor 오버플로우 개선.",
-                "계약정보": "L/C at Sight. 2+1년 갱신 합의. 환율 1,150원 고정 단가표 적용.",
-                "관리포인트": "SASO 기준 TDS Adjustor 탑재 신제품 6월 양산 지휘 및 직접 진출 채널 충돌 방지.",
-                "주력제품": "Purifier (VillaM2, Windy3, Core Plus)"
-            },
-            {
-                "업체명": "Zepter International", "국가": "Europe, Russia", "CEO": "Jankovic Milisav",
-                "매출분석": "러시아 전쟁 반사이익 반등. 25년 전망 3,358 K$ (계획비 231%).",
-                "매출그래프": "24실적: 1,869 K$ |■■■■■■■■\n25전망: 3,358 K$ |■■■■■■■■■■■■■■■\n26계획: 2,700 K$ |■■■■■■■■■■■■",
-                "판매량그래프": "[AP-1004] '21: 23,598대 |■■■■■■■■\n[PWC-670] '24:  9,660대 |■■■■",
-                "운영현황": "Superior RO 등 신제품 제안 출장 완료. 5월 양산용 항균 탱크 개발 추진.",
-                "이슈": "EU 규제 대응 Biocote 마스터배치 탱크 개발 시급. 대금 연체 반복으로 결제 완화 검토.",
-                "계약정보": "2006/2011년 계약(해지불가). 30% 선금, B/L후 30일.",
-                "관리포인트": "유럽 FCM 규정 갱신 기간 내 완료 및 연체 대금 회수와 현금 리스크 균형점 확보.",
-                "주력제품": "Purifier (P-07CL), Premium Air (AP-1004)"
-            },
-            {
-                "업체명": "Frootle India", "국가": "India", "CEO": "Rahul Popat",
-                "매출분석": "26년 1분기 3,046 K$ (91%). 1월 물량 밀어내기 집중 성공.",
-                "매출그래프": "24실적: 2,965 K$ |■■■■■\n25전망: 4,474 K$ |■■■■■■■■\n26계획: 4,760 K$ |■■■■■■■■",
-                "판매량그래프": "[AM150] '22실적: 22,716대 |■■■■■■■\n* AM50/100 4만 대 발주 완료",
-                "운영현황": "인도 BIS 인증 강제 대응. 후속 모델 필드 테스트 및 카트리지 금형 태국 이관.",
-                "이슈": "BIS 인증 일정 지연 리스크. 인니 공장 심사 일정 단축 사수 필요.",
-                "계약정보": "OA 60days. 공급계약서 세부 조항 협의 차 뭄바이 미팅 진행.",
-                "관리포인트": "인니 공장 심사 최대한 Pull-in 하여 4월 런칭 공백 방지 및 물동 모니터링.",
-                "주력제품": "Air Purifier (AM150, Aim, Storm, AM50/100)"
-            },
-            {
-                "업체명": "Waternet", "국가": "Turkey, UAE", "CEO": "Alp Saul",
-                "매출분석": "26년 1분기 터키 159% 달성. ST 8,000 K$ 목표 달성 동력 강력.",
-                "매출그래프": "24실적: 3,607 K$ |■■■■■■\n25전망: 6,097 K$ |■■■■■■■■■■\n26계획: 6,550 K$ |■■■■■■■■■■",
-                "판매량그래프": "[터키전체] '23: 7,497대 |■■■■■\n[중동전체] '24: 3,014대 |■■",
-                "운영현황": "코어 대체 '코어플러스' 개발 확정. Deniz Bank 750대 B2B 입찰 중.",
-                "이슈": "호르무즈 봉쇄 물류 대란. L/C 오류 및 컨펌 지연으로 인한 출하 병목 빈번.",
-                "계약정보": "L/C 180-360 days. 2026-2028 연장 완료(누적 $24M 자동연장).",
-                "관리포인트": "B2B 은행 입찰 사수 샘플 납품 및 시루드라이버 품질 이슈 개선 모니터링.",
-                "주력제품": "Purifier (Siroo Driver, Harry, Core, Mono)"
-            },
-            {
-                "업체명": "RabbitAir", "국가": "USA, Canada, Japan", "CEO": "Edwin Cheung",
-                "매출분석": "필터/소모품 마진 기반 압도적 Cash Cow. 26년 5,000 K$ 목표 유지.",
-                "매출그래프": "24실적: 4,477 K$ |■■■■■\n25전망: 4,488 K$ |■■■■■\n26계획: 5,000 K$ |■■■■■■",
-                "판매량그래프": "[필터 매출 중심] '24년 MDF: $42K\n미-중 관세 대응 필터 5% 한시 할인 가동",
-                "운영현황": "BioGS WiFi 앱 버그 수정 및 재테스트. 흡연자 특화 모델 기획 중.",
-                "이슈": "HEPA 필터 항균 소구 소송 리스크 극심. 당사 면책 레터 발송 완료.",
-                "계약정보": "자동갱신 4년 조항 검토 중. 20% T/T 선금, 80% 90일 OA.",
-                "관리포인트": "항균 소송 대응 데이터 무결성 전수 조사 및 관세 폭탄 대비 판가 시나리오 수립.",
-                "주력제품": "Air Purifier (Minus A2, A3, BioGS 2.0)"
-            },
-            {
-                "업체명": "Bork-Import LLC", "국가": "Russia, Kazakhstan", "CEO": "Anton Kolmogorov",
-                "매출분석": "수출 통제로 1분기 선적 0 K$. 26년 급격한 역성장 궤도 진입.",
-                "매출그래프": "24실적: 2,042 K$ |■■■■■\n25전망: 1,317 K$ |■■■\n26계획:   750 K$ |■■",
-                "판매량그래프": "[수출 쿼터 전면 차단]\n안마 제품군 100% 전환 추진 중",
-                "운영현황": "듀얼클린 우회 분류 실패. 중국산 안마의자 위주 생존 모색 중.",
-                "이슈": "홍콩 경유 우회 수출 법무 불가 판정. 최종사용자 이행보고서 제출 완료.",
-                "계약정보": "25년말 만료. 잔금 85% 전액 송금 조건. PSSS 필수.",
-                "관리포인트": "우회 수출 적발 사례 연루 방지 법무 가이드 준수 및 안마의자 로트 불량 원천 봉쇄.",
-                "주력제품": "Massage Chair (Pebble), Noble Air"
-            },
-            {
-                "업체명": "Albion Nordic", "국가": "Nordics", "CEO": "Jonas Berg",
-                "매출분석": "26년 1분기 442 K$ (68%). 봄철 시즌 앞두고 강력 반등세.",
-                "매출그래프": "24실적:   707 K$ |■■\n25전망: 1,714 K$ |■■■■\n26계획: 1,900 K$ |■■■■■",
-                "판매량그래프": "[돌로미티] '21: 12,215대 |■■■■■\n* AM50 5월 리테일 런칭 사수 중",
-                "운영현황": "챔프/매그넘 D2C 개시. AM50 리테일 진입 위해 인니공장 L/T 단축 협의.",
-                "이슈": "레진 공급 누락 및 부품 단종으로 CB 인증 리스크 발생. 직납 차질 우려.",
-                "계약정보": "26~27년 연장 완료. 30% 선금, 70% OA 120days.",
-                "관리포인트": "Pollen 시즌 실기 방지 조달 조율 및 신규 파생 모델 도입 단가 확정.",
-                "주력제품": "Air (Dolomiti, Mini Storm, AM150)"
-            },
-            {
-                "업체명": "ATH", "국가": "Spain", "CEO": "Francesc Redolad",
-                "매출분석": "100만 불 선 횡보. 26년 1분기 291 K$ 달성(초도 포함).",
-                "매출그래프": "24실적:   927 K$ |■■■\n25전망:   943 K$ |■■■\n26계획:   980 K$ |■■■",
-                "판매량그래프": "스위치 초도 1,235대 선적 확정\nUTS 정수기 세대교체 집중",
-                "운영현황": "노후 모델 단종 및 스위치 전면 교체. 입수부 피팅 변경 포장 테스트 완료.",
-                "이슈": "WQA Private Labeling 갱신 병목 지연. 품질 클레임 보상안 타결 중.",
-                "계약정보": "계약서 없음. L/C 90 days. FOB Busan.",
-                "관리포인트": "Grupo Planeta향 초도품 규제 최종 검수 및 채널 영업권 충돌 방지.",
-                "주력제품": "Purifier (Khan, Circle, Mate, Switch)"
-            },
-            {
-                "업체명": "ESD", "국가": "Dominican Rep.", "CEO": "최상민",
-                "매출분석": "자금 악화로 전망 하회 우려. 1분기 305 K$ 로 간신히 목표 선방.",
-                "매출그래프": "24실적:   413 K$ |■■\n25전망:   500 K$ |■■\n26계획:   750 K$ |■■■",
-                "판매량그래프": "[바이칼] '23: 440대 |■■\n* 일시불(글로벌P) 가속 추진",
-                "운영현황": "자금 압박 타개 위해 일시불 모델 투입. 자가관리형 NT 정수기 도입 논의.",
-                "이슈": "L/C 중단 및 대금 입금 지연 고질화. 춘절 물동량 체증 심각.",
-                "계약정보": "100% T/T in advance. 계약 갱신 MPA 조항 갈등 중.",
-                "관리포인트": "생산 확정 2주 전 미입금 시 절대 투입 금지 룰 고수.",
-                "주력제품": "Purifier (Baikal, Core, Windy, Global P)"
-            },
-            {
-                "업체명": "Neutratech", "국가": "Angola, Nigeria", "CEO": "Andrei",
-                "매출분석": "환율 폭등 및 정세 불안. 1분기 85 K$ (160%) 초과 선적 중.",
-                "매출그래프": "24실적:   414 K$ |■■\n25전망:   369 K$ |■■\n26계획:   248 K$ |■",
-                "판매량그래프": "나이지리아 $75K / 모리셔스 $70K 등\n단발성 소규모 오더 중심",
-                "운영현황": "앙골라향 오더 CNCA 지연으로 부킹 대기. 명맥 유지용 선적 중.",
-                "이슈": "매출 부진에도 FOC 오더 지속 요구. 달러 반출 통제 심각.",
-                "계약정보": "무계약 진행(국가 리스크). 100% T/T in advance.",
-                "관리포인트": "미수금 전이 차단 위해 선금 입금 확인 철저 및 창고료 모니터링.",
-                "주력제품": "Purifier (Windy3, Core, Global P)"
-            },
-            {
-                "업체명": "Tafani", "국가": "UAE, Oman", "CEO": "Zakir Ahmed",
-                "매출분석": "재고 과다로 26년 역성장 우려. 라마단 할인으로 재고 소진 주력.",
-                "매출그래프": "24실적:   607 K$ |■■\n25전망:   941 K$ |■■■\n26계획: 1,100 K$ |■■■",
-                "판매량그래프": "[Mighty] '23: 1,575대 |■■■\n* 기말 재고 4.3천 대 소진 사활",
-                "운영현황": "인도 아마존 리뷰 연동으로 신뢰도 보강. GCC 크로스보더 판매 개시.",
-                "이슈": "수요 예측 실패(재고 과다). ODM 파트너와 저가 경쟁 중재 합의.",
-                "계약정보": "100% LC at sight. 2026 연장 완료.",
-                "관리포인트": "과다 재고 완전 소진을 위한 마케팅 예산 적기 투입 독려.",
-                "주력제품": "Air (AM400, Mighty, Cartridge)"
-            },
-            {
-                "업체명": "Entekhab (DL)", "국가": "Iran (via UAE)", "CEO": "Mohmmad Hoseini",
-                "매출분석": "신규 거래선 실적 부재. 제재 강화로 로드맵 보류 중.",
-                "매출그래프": "* 2차 제재 리스크 고조 (보류)",
-                "판매량그래프": "* DL통상 100% 선금 수취 우회 구조",
-                "운영현황": "트럼프 정부 제재 강화 예고로 사업 무기한 중단. 1월 미팅 취소.",
-                "이슈": "우회 수출 적발 시 법무 리스크 최상위. 제재 회피 우려 극심.",
-                "계약정보": "계약 체결 전. 100% T/T in advance 논의.",
-                "관리포인트": "영업 전면 보류 및 물밑 정보 교류선만 유지하며 모니터링.",
-                "주력제품": "Parts, Filter (Purifier/Air)"
-            },
-            {
-                "업체명": "V&B", "국가": "China", "CEO": "Frank Göring",
-                "매출분석": "중국 부동산 침체 직격탄. 심각한 역성장 늪 진입.",
-                "매출그래프": "24실적: 1,649 K$ |■■■■■\n25전망:   882 K$ |■■■\n26계획:   702 K$ |■■",
-                "판매량그래프": "[L6CH] '24실: 4,540대 |■■■\n* A/S 오더로 간신히 명맥 유지",
-                "운영현황": "비즈니스 종료를 위한 Exit Plan 준비. 1분기 최소 부품 오더.",
-                "이슈": "대규모 품질 클레임 보상 비율 최종 협의 중. 채권 회수 총력.",
-                "계약정보": "금형 보유 시 자동 연장. OA 85 days.",
-                "관리포인트": "잔여 미수금 조속 회수 및 불용 자재 파악 등 깔끔한 출구 전략.",
-                "주력제품": "Premium Bidet (L3CH, L6CH)"
-            }
+            { "업체명": "Brondell", "국가": "USA", "tz": "America/Los_Angeles", "CEO": "Steve Scheer", "매출분석": "25년 전망 6.1M$ (159% 초과). 26년 1Q 1.3M$ 순항 중.", "매출그래프": "24실: 4.2M$ |■■■■\n25전: 6.1M$ |■■■■■■", "판매량그래프": "S1400: 1,060대 (3월)\n소모품 마진 59.3%로 수익 보전.", "운영현황": "코스트코 오프라인 진입용 브라운 박스 파생 및 더미 준비.", "이슈": "CoC 불합격 대응 재심사 대기. 리즈법 파우셋 사양 확정.", "계약정보": "2013년 만료/무계약 유지. 40% T/T, 60% OA 90일.", "관리포인트": "장납기 자재 안전재고 1개월 추가 확보 운영안 정착.", "주력제품": "S1400, Circle" },
+            { "업체명": "SAMNAN", "국가": "Saudi Arabia", "tz": "Asia/Riyadh", "CEO": "Abdul Latif", "매출분석": "26년 PO 1.98M$ 조기 입수. 1Q 114% 달성 강력 우상향.", "매출그래프": "24실: 0.6M$ |■\n25전: 1.0M$ |■■", "판매량그래프": "빌라엠2: 1,300대 (전망)\n윈디3: 1,030대 (실적)", "운영현황": "아마존 KSA 직접 진출 전략 수립. LX판토스 물류 네고 중.", "이슈": "호르무즈 해협 위기 물류 우회 수배. 윈디3 오버플로우 개선.", "계약정보": "L/C at Sight. 2+1년 갱신. 고정환율 1,150원.", "관리포인트": "SASO 기준 신제품 6월 초도 양산 지휘 및 채널 충돌 방어.", "주력제품": "Windy3, My Ice" },
+            { "업체명": "Zepter", "국가": "Switzerland", "tz": "Europe/Zurich", "CEO": "Jankovic Milisav", "매출분석": "러시아 전쟁 반사이익 반등. 25년 전망 3.3M$ (231%).", "매출그래프": "24실: 1.8M$ |■■\n25전: 3.3M$ |■■■■", "판매량그래프": "AP-1004: 2.3만대 (누적)\nPWC-670: 0.9만대 (누적)", "운영현황": "Superior RO 등 신제품 제안 완료. 5월 항균 탱크 양산.", "이슈": "EU 규제 대응 Biocote 마스터배치 탱크 개발 시급.", "계약정보": "2006/2011년 고전 계약. 30% 선금, B/L후 30일.", "관리포인트": "유럽 FCM 규정 갱신 및 연체 대금 회수 집중 관리.", "주력제품": "P-07CL, AP-1004" },
+            { "업체명": "Frootle India", "국가": "India", "tz": "Asia/Kolkata", "CEO": "Rahul Popat", "매출분석": "26년 1Q 3.0M$ (91%) 기록. 1월 물량 밀어내기 성공.", "매출그래프": "24실: 2.9M$ |■■\n25전: 4.4M$ |■■■■", "판매량그래프": "AM150: 2.2만대 (실적)\nAM50/100 4만대 발주 완료.", "운영현황": "인도 BIS 인증 강제 대응. 후속 모델 필드 테스트 개시.", "이슈": "BIS 일정 지연 리스크. 동림 공장 심사 일정 단축 사수.", "계약정보": "OA 60days. 공급계약서 세부 조항 협의 차 뭄바이 미팅.", "관리포인트": "4월 런칭 공백 방지 위해 BIS 인증 및 물동 타이트 관리.", "주력제품": "AM150, AM50/100" },
+            { "업체명": "Waternet", "국가": "Turkey", "tz": "Europe/Istanbul", "CEO": "Alp Saul", "매출분석": "26년 1Q 터키 159% 달성. ST 8M$ 달성 모멘텀 강력.", "매출그래프": "24실: 3.6M$ |■■■\n25전: 6.0M$ |■■■■■", "판매량그래프": "터키: 7,497대 ('23)\n중동: 3,014대 ('24)", "운영현황": "코어 대체 '코어플러스' 개발. Deniz Bank B2B 입찰 중.", "이슈": "호르무즈 봉쇄 물류 대란. L/C 오류 및 컨펌 지연 잦음.", "계약정보": "L/C 180-360 days. 2026-28 연장 완료.", "관리포인트": "은행 입찰 사수 샘플 납품 및 소음 품질 이슈 개선.", "주력제품": "Siroo, Core Plus" },
+            { "업체명": "RabbitAir", "국가": "USA", "tz": "America/Los_Angeles", "CEO": "Edwin Cheung", "매출분석": "필터 매출 기반 압도적 Cash Cow. 26년 5M$ 목표.", "매출그래프": "24실: 4.4M$ |■■■■\n25전: 4.4M$ |■■■■", "판매량그래프": "완제품보다 필터 수익 중심.\n'24 MDF: $42K 지원.", "운영현황": "BioGS WiFi 앱 버그 수정 및 프리미엄 탈취 모델 기획.", "이슈": "HEPA 항균 소구 소송 리스크. 과거 데이터 무결성 조사.", "계약정보": "자동갱신 4년. 20% 선금, 80% OA 90일.", "관리포인트": "소송 리스크 방어 로직 세팅 및 20% 관세 대비 판가 대응.", "주력제품": "Minus A2, BioGS" },
+            { "업체명": "Bork", "국가": "Russia", "tz": "Europe/Moscow", "CEO": "Anton Kolmogorov", "매출분석": "수출 통제로 26년 급격한 역성장. 1Q 선적 0 K$.", "매출그래프": "24실: 2.0M$ |■■\n25전: 1.3M$ |■", "판매량그래프": "안마제품 100% 전환 추진.\n페블체어 샘플 대응 중.", "운영현황": "듀얼클린 우회 분류 실패. 중국산 안마의자로 생존 모색.", "이슈": "3국 우회 수출 법무 불가 판정. 제재 대응 피로도 심화.", "계약정보": "25년말 만료. 잔금 85% 전액 송금 특수 조건.", "관리포인트": "법무 가이드 준수 및 중국산 제품 로트성 품질 사고 봉쇄.", "주력제품": "Pebble, Massage Bed" },
+            { "업체명": "Albion Nordic", "국가": "Nordics", "tz": "Europe/Stockholm", "CEO": "Jonas Berg", "매출분석": "26년 1Q 442 K$ (68%). 봄철 시즌 앞두고 반등세.", "매출그래프": "24실: 0.7M$ |■\n25전: 1.7M$ |■■", "판매량그래프": "돌로미티: 1.2만대 ('21)\nAM50 5월 리테일 런칭 사수.", "운영현황": "챔프/매그넘 D2C 개시. 동림 인니공장 L/T 단축 협의.", "이슈": "레진 공급 누락 및 부품 단종으로 CB 인증 갱신 리스크.", "계약정보": "26-27 연장 완료. 30% 선금, 70% OA 120일.", "관리포인트": "Pollen 시즌 실기 방지 조달 조율 및 도입 단가 확정.", "주력제품": "AM150, Dolomiti" },
+            { "업체명": "ATH", "국가": "Spain", "tz": "Europe/Madrid", "CEO": "Francesc Redolad", "매출분석": "100만 불 선 횡보. 신규 스위치 선적 확정 ($165K).", "매출그래프": "24실: 0.9M$ |■\n25전: 0.9M$ |■", "판매량그래프": "B2B 납품 비중 확대 주력.\nUTS 세대교체 집중 시기.", "운영현황": "노후 모델 단종 및 스위치(P-2201N) 전면 교체 중.", "이슈": "WQA Private Labeling 갱신 및 인쇄물 변경 병목.", "계약정보": "정식 계약서 없음. L/C 90 days. FOB Busan.", "관리포인트": "초도품 규제 최종 검수 및 채널 영업권 충돌 방지.", "주력제품": "Switch, Circle" },
+            { "업체명": "ESD", "국가": "Dom-Rep", "tz": "America/Santo_Domingo", "CEO": "최상민", "매출분석": "자금 악화로 전망 하회. 1Q 305 K$ 목표 간신히 선방.", "매출그래프": "24실: 0.4M$ |■\n25전: 0.5M$ |■", "판매량그래프": "바이칼: 440대 ('23)\n일시불 모델(글로벌P) 가속.", "운영현황": "현금 회전 위해 일시불 대거 투입. 자가관리형 도입 논의.", "이슈": "L/C 중단 및 대금 지연 고질화. 춘절 물동량 체증 심각.", "계약정보": "100% T/T 사전입금. MPA 조항 강제 삽입 협의.", "관리포인트": "생산 전 미입금 시 투입 금지 룰 준수 및 파나마 판로 개척.", "주력제품": "Global P, Baikal" },
+            { "업체명": "Neutratech", "국가": "Angola", "tz": "Africa/Luanda", "CEO": "Andrei Joaquim", "매출분석": "환율 폭등 및 정세 불안. 1Q 85 K$ 초과 선적.", "매출그래프": "24실: 0.4M$ |■\n25전: 0.3M$ |■", "판매량그래프": "나이지리아 $75K 선적 진행.\n소규모 단발성 오더 중심.", "운영현황": "앙골라 CNCA 지연 부킹 대기. 명맥 유지용 선적 유지.", "이슈": "매출 부진에도 FOC 오더 지속 요구. 당사 거절 방침.", "계약정보": "무계약 진행. 100% T/T in advance 필수.", "관리포인트": "악성 미수금 차단 위해 선금 입금 확인 및 보관료 관리.", "주력제품": "Windy3, Global P" },
+            { "업체명": "Tafani", "국가": "UAE", "tz": "Asia/Dubai", "CEO": "Zakir Ahmed", "매출분석": "재고 과다로 26년 역성장 우려. 기말재고 4.3천대.", "매출그래프": "24실: 0.6M$ |■\n25전: 0.9M$ |■■", "판매량그래프": "마이티: 1,575대 ('23)\n카트리지: 1,350대 ('23)", "운영현황": "인도 아마존 리뷰 연동 신뢰도 보강. GCC 4개국 판매 개시.", "이슈": "수요 예측 실패. ODM 파트너와 저가 경쟁 중재 합의.", "계약정보": "100% LC at sight. 2026 연장 완료.", "관리포인트": "과다 재고 소진을 위한 디지털 마케팅 예산 적기 투입.", "주력제품": "AM400, Mighty" },
+            { "업체명": "DL (Entekhab)", "국가": "Iran", "tz": "Asia/Tehran", "CEO": "Mohmmad Hoseini", "매출분석": "신규 거래선. 제재 강화로 1.2M$ 로드맵 보류 중.", "매출그래프": "* 2차 제재 리스크 고조 (보류)", "판매량그래프": "DL통상 100% 선금 수취 구조.\n이란 가전 1위 구매 사무소.", "운영현황": "트럼프 정부 제재 강화 예고로 사업 무기한 중단.", "이슈": "우회 수출 적발 시 당사 법무 리스크 최상위 수준.", "계약정보": "계약 체결 전. 100% T/T 선금 조건.", "관리포인트": "영업 전면 보류 및 물밑 정보 교류선만 유지하며 모니터링.", "주력제품": "Parts, Filter" },
+            { "업체명": "V&B", "국가": "China", "tz": "Asia/Shanghai", "CEO": "Frank Göring", "매출분석": "중국 부동산 침체 직격탄. 25년 전망 반토막 (0.8M$).", "매출그래프": "24실: 1.6M$ |■■\n25전: 0.8M$ |■", "판매량그래프": "L6CH: 4,540대 ('24실)\nA/S 오더로 간신히 명맥 유지.", "운영현황": "비즈니스 종료를 위한 Exit Plan 준비. 최소 오더 연명.", "이슈": "대규모 품질 클레임 보상 비율 최종 협의 및 채권 회수.", "계약정보": "금형 보유 시 자동 연장. OA 85 days.", "관리포인트": "잔여 미수금 회수 및 불용 자재 파악 등 깔끔한 출구 전략.", "주력제품": "Bidet L3/L6" }
         ];
 
         let currentPage = 1;
@@ -251,11 +106,22 @@
         let isEditMode = false;
         let filteredData = [...partners];
 
+        function updateClocks() {
+            document.querySelectorAll('.local-clock').forEach(el => {
+                const tz = el.dataset.tz;
+                try {
+                    const timeStr = new Date().toLocaleTimeString('en-GB', { timeZone: tz, hour12: false });
+                    el.innerText = `🕒 Local: ${timeStr}`;
+                } catch(e) { el.innerText = "🕒 Time Error"; }
+            });
+        }
+
         function render(page = 1) {
             currentPage = page;
             const grid = document.getElementById('partnerGrid');
             const startIndex = (page - 1) * itemsPerPage;
-            const pageData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = filteredData.slice(startIndex, endIndex);
 
             grid.innerHTML = pageData.map((p, i) => {
                 const globalIdx = startIndex + i;
@@ -263,7 +129,11 @@
                 <div class="p-card" data-idx="${globalIdx}">
                     <div class="card-top">
                         <div>
-                            <span class="country-badge" contenteditable="${isEditMode}">${p.국가}</span>
+                            <div class="country-group">
+                                <span class="country-badge" contenteditable="${isEditMode}">${p.국가}</span>
+                                <div class="local-clock" data-tz="${p.tz}">🕒 Loading...</div>
+                                <span style="font-size:9px; color:var(--text-muted); opacity:0.5;">(TZ: <span class="tz-val" contenteditable="${isEditMode}">${p.tz}</span>)</span>
+                            </div>
                             <div class="partner-name" contenteditable="${isEditMode}">${p.업체명}</div>
                             <div style="font-size:14px; color:var(--text-muted);">👤 CEO: <span contenteditable="${isEditMode}">${p.CEO}</span></div>
                         </div>
@@ -272,7 +142,7 @@
                     <div class="info-section">
                         <div>
                             <div class="section-header">📊 Sales Intelligence</div>
-                            <div class="main-point" style="font-size:15px; margin-bottom:10px;" contenteditable="${isEditMode}">${p.매출분석}</div>
+                            <div class="main-point" style="font-size:14px; margin-bottom:10px;" contenteditable="${isEditMode}">${p.매출분석}</div>
                             <div class="chart-box" contenteditable="${isEditMode}">${p.매출그래프}</div>
                             <div class="chart-box" style="color:var(--accent); border-color:rgba(74,159,255,0.1);" contenteditable="${isEditMode}">${p.판매량그래프}</div>
                         </div>
@@ -285,7 +155,7 @@
                     </div>
 
                     <div class="highlight-danger">
-                        <strong>⚠️ Critical Issues:</strong><br>
+                        <strong>⚠️ Critical Issues & Risks:</strong><br>
                         <span contenteditable="${isEditMode}">${p.이슈}</span>
                     </div>
 
@@ -300,6 +170,7 @@
                 </div>`;
             }).join('');
             renderPagination();
+            updateClocks();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -315,13 +186,13 @@
             const repo = localStorage.getItem('gh_repo');
             if(!token || !repo) { alert("🔒 Settings에서 GitHub 토큰을 먼저 설정하세요."); toggleModal(); return; }
 
-            // 현재 화면의 데이터를 partners 배열에 수집
             document.querySelectorAll('.p-card').forEach(card => {
                 const idx = card.dataset.idx;
                 const p = partners[idx];
                 p.국가 = card.querySelector('.country-badge').innerText;
+                p.tz = card.querySelector('.tz-val').innerText;
                 p.업체명 = card.querySelector('.partner-name').innerText;
-                p.CEO = card.querySelector('.ceo-tag span') ? card.querySelector('.ceo-tag span').innerText : p.CEO;
+                p.CEO = card.querySelector('.ceo-tag span').innerText;
                 p.매출분석 = card.querySelector('.main-point').innerText;
                 p.매출그래프 = card.querySelectorAll('.chart-box')[0].innerText;
                 p.판매량그래프 = card.querySelectorAll('.chart-box')[1].innerText;
@@ -329,10 +200,10 @@
                 p.계약정보 = card.querySelector('.contract-info').innerText;
                 p.이슈 = card.querySelector('.highlight-danger span').innerText;
                 p.관리포인트 = card.querySelector('.admin-box div').innerText;
-                p.주력제품 = card.querySelector('.lineup-footer span') ? card.querySelector('.lineup-footer span').innerText : card.lastElementChild.innerText.replace('📦 LINEUP: ', '');
+                p.주력제품 = card.lastElementChild.querySelector('span').innerText;
             });
 
-            if(!confirm("GitHub 저장소에 직접 저장하시겠습니까? 사이트 반영까지 약 1~2분이 소요됩니다.")) return;
+            if(!confirm("GitHub에 저장하시겠습니까?")) return;
             const saveBtn = document.getElementById('saveBtn');
             saveBtn.innerText = "⌛ Saving..."; saveBtn.disabled = true;
 
@@ -349,13 +220,12 @@
                     method: 'PUT',
                     headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: "Update Intelligence Data via Dashboard",
+                        message: "Update Partner Intel via UI",
                         content: btoa(unescape(encodeURIComponent(newContent))),
                         sha: fileData.sha
                     })
                 });
-
-                if(putFile.ok) { alert("✅ 저장 완료! 잠시 후 사이트가 업데이트됩니다."); location.reload(); }
+                if(putFile.ok) { alert("✅ 저장 완료!"); location.reload(); }
                 else throw new Error("API Error");
             } catch(e) { alert("❌ 저장 실패: " + e.message); }
             finally { saveBtn.innerText = "💾 Save to GitHub"; saveBtn.disabled = false; }
@@ -390,6 +260,7 @@
             alert("Settings Saved!"); toggleModal();
         }
 
+        setInterval(updateClocks, 1000);
         render(1);
     </script>
 </body>
